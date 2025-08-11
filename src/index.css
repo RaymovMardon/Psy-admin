@@ -1,4 +1,7 @@
 @import "tailwindcss";
-body{
-    background-color: #15151e;
+body {
+  background-color: #15151e;
+}
+aside .active {
+  color: #6a73fa;
 }
