@@ -5,3 +5,18 @@ body {
 aside .active {
   color: #6a73fa;
 }
+
+.ad_video_wrp{
+  display:flex;
+  align-items: center;
+  justify-content: center;
+  gap:2rem;
+  flex-wrap:wrap;
+ 
+}
+.ad_video{
+  min-width: 250px;
+}
+.ad_video video{
+  width:250px;
+}
