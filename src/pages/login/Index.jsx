@@ -4,6 +4,16 @@ import { useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash, FaUserCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+const Notification = (nots,switc) => {
+  if(switc=="error"){
+  toast.error(`${nots}.`, { position: "top-right" });}
+  else{
+    toast.success("Success login", { position: "top-right" });
+  }
+};
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const {
@@ -21,15 +31,21 @@ const LoginPage = () => {
       localStorage.setItem("token", res?.data?.access_token);
       navigate("/");
     } catch (err) {
-      console.error(err);
+      console.error(err.response.data.message);
+      if (err.message == "Network Error") {
+        Notification("Network Error. Please try later","error");
+      } else if(err.response.data.message){
+        Notification("user not found","error")
+      }
     }
   };
   return (
     <section
-      className="min-h-screen flex justify-center items-center w-full bg-cover bg-center"
+      className="min-h-screen overflow-x-hidden flex justify-center items-center w-full bg-cover bg-center"
       style={{ backgroundImage: 'url("/miya_rasmi.jpg")' }}
     >
       <div className="container mx-auto backdrop-blur flex flex-col items-center max-w-[400px] shadow-2xl border-white rounded-xl py-8 px-2 md:mr-40">
+        <ToastContainer />
         <div>
           <FaUserCircle className="text-white text-[70px]" />
         </div>
@@ -42,7 +58,7 @@ const LoginPage = () => {
           <input
             type="text"
             placeholder="+998*********"
-            className="border border-white py-2 px-2 rounded-md focus:ring-1 focus:ring-[#204d74] focus:border-[#204d74] outline-none w-full mb-4"
+            className="border border-white text-white py-2 px-2 rounded-md focus:ring-1 focus:ring-[#204d74] focus:border-[#204d74] outline-none w-full mb-4"
             {...register("phone", {
               required: "login kiriting",
               minLength: { message: "kamida 5 ta belgi kiriting", value: 5 },
@@ -55,7 +71,7 @@ const LoginPage = () => {
           <input
             type={showPassword ? "text" : "password"}
             placeholder="********"
-            className="border block border-white py-2 px-2 rounded-md focus:ring-1 focus:ring-[#204d74] focus:border-[#204d74] w-full outline-none"
+            className="border text-white block border-white py-2 px-2 rounded-md focus:ring-1 focus:ring-[#204d74] focus:border-[#204d74] w-full outline-none"
             {...register("password", {
               required: "password kiriting",
               minLength: { message: "kamida 8 ta belgi kiriting", value: 8 },
